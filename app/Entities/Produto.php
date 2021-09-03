@@ -65,4 +65,5 @@ class Produto extends Entity
 
 					return array_intersect($primeiroArrayMedidas, $segundoArrayMedidas);
 	 }
+
 }

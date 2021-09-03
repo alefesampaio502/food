@@ -87,7 +87,7 @@
                 <div class="row" style="margin-top: 3em; margin-bottom:3em;">
                   <div class="col-md-6">
 
-                    <label>Tamanho do produto</label>
+                    <label>Tamanho do produtos</label>
                       <select id="tamanho" class="form-control" name="tamanho">
                           <!--- Aqui serão renderizadas as opções de tamanho, via javjavascript -->
                       </select>
