@@ -89,10 +89,8 @@
                     <a class="right carousel-control" href="#main-carousel" role="button" data-slide="next">
                         <i class="fa fa-angle-right" aria-hidden="true"></i>
                     </a>
-
                     <!-- Wrapper for slides -->
                     <div class="carousel-inner" role="listbox">
-
                         <!-- Carousel items   -->
                         <div class="item active">
                             <div class="carousel-caption">
@@ -112,7 +110,6 @@
                                 </div>
                             </div>
                         </div>
-
                         <div class="item">
                             <div class="carousel-caption">
                                 <div class="fadeUp item_img">
@@ -131,7 +128,6 @@
                                 </div>
                             </div>
                         </div>
-
                         <div class="item">
                             <div class="carousel-caption">
                                 <div class="fadeUp item_img">
@@ -150,7 +146,6 @@
                                 </div>
                             </div>
                         </div>
-
                         <div class="item">
                             <div class="carousel-caption">
                                 <div class="fadeUp item_img">
@@ -194,37 +189,36 @@
                 <!-- /.container -->
             </div>
             <!-- END carousel -->
-
             <!-- BEGIN navigation -->
             <div class="navigation">
 
                 <div class="navbar-container" data-spy="affix" data-offset-top="400">
                     <div class="container">
 
-                        <div class="navbar_top hidden-xs">
-                            <div class="top_addr">
-                                <span><i class="fa fa-map-marker" aria-hidden="true"></i> Your country, your city, 12345</span>
-                                <span><i class="fa fa-phone" aria-hidden="true"></i> 123 456 789</span>
-                                <span><i class="fa fa-clock-o" aria-hidden="true"></i> 11:00 - 21:00</span>
-                                <div class="pull-right search-block">
-                                    <i class="fa fa-search" id="search" aria-hidden="true"></i>
-                                </div>
-                            </div>
-                            <div id="navbar_search">
-                                <form method="post">
-                                    <input type="text" name="q" class="form-control pull-left" value="" placeholder="Search anything">
-                                    <button type="submit" class="pull-right close" id="search_close"><i class="fa fa-close"></i></button>
-                                </form>
-                            </div>
-                        </div>
-                        <!-- /.navbar_top -->
-
+                      <div class="navbar_top hidden-xs">
+                          <div class="top_addr">
+                              <span><i class="fa fa-map-marker" aria-hidden="true"></i> Maranhão,Imperatriz, 1200</span>
+                              <span><i class="fa fa-phone" aria-hidden="true"></i> (99)xxxxx-xxxx</span>
+                              <span><i class="fa fa-clock-o" aria-hidden="true"></i> 11:00 - 21:00 h</span>
+                              <div class="pull-right search-block">
+                                  <i class="fa fa-search" id="search" aria-hidden="true"></i>
+                              </div>
+                          </div>
+                          <div id="navbar_search">
+                              <form method="post">
+                                  <input type="text" name="q" class="form-control pull-left" value="" placeholder="Search anything">
+                                  <button type="submit" class="pull-right close" id="search_close"><i class="fa fa-close"></i></button>
+                              </form>
+                          </div>
+                      </div>
+                      <!-- /.navbar_top -->
                         <!-- BEGIN navbar -->
                         <nav class="navbar">
                             <div id="navbar_content">
                                 <!-- Brand and toggle get grouped for better mobile display -->
                                 <div class="navbar-header">
-                                    <a class="navbar-brand" href="#">
+                                    <a class="navbar-brand" href="<?php echo base_url('/'); ?>">
+
                                         <img src="<?php echo site_url('web/'); ?>src/assets/img/logo.png" alt="logo" />
                                     </a>
                                     <a href="#cd-nav" class="cd-nav-trigger right_menu_icon">
@@ -234,17 +228,18 @@
 
                                 <!-- Collect the nav links, forms, and other content for toggling -->
                                 <div class="collapse navbar-collapse" id="navbar">
-                                    <div class="navbar-right">
-                                        <ul class="nav navbar-nav">
-                                            <li><a class="page-scroll" href="#header">Home</a></li>
-                                            <li><a class="page-scroll" href="#about_us">About</a></li>
-                                            <li><a class="page-scroll" href="#menu">Menus</a></li>
-                                            <li><a class="page-scroll" href="#gallery">Gallery</a></li>
-                                            <li><a class="page-scroll" href="#reservation">Reservation</a></li>
-                                            <li><a class="page-scroll" href="#footer">Contact</a></li>
-                                        </ul>
-                                    </div>
-                                </div>
+                                      <div class="navbar-right">
+                                          <ul class="nav navbar-nav">
+                                              <li><a class="page-scroll" href="#header">Home</a></li>
+
+                                             <li><a class="page-scroll" href="#reservation">Bairros Atendidos</a></li>
+                                              <li><a class="page-scroll" href="#footer">Contato</a></li>
+                                              <li><a class="page-scroll" href="#about_us">Minha conta </a></li>
+
+                                              <li><a class="page-scroll" href="#menu">Sair</a></li>
+                                          </ul>
+                                      </div>
+                                  </div>
                                 <!-- /.navbar-collapse -->
                             </div>
                         </nav>

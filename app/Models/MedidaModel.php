@@ -58,4 +58,21 @@ class MedidaModel extends Model
 				}
 
 
+		/*
+		@Uso : controller Produto/exibeValor
+		@param : $medida_id
+		@retuen :objeto contendo o maior valor
+		*/
+	public function exibeValor(int $medida_id){
+
+			return $this->selectMax('produtos_especificacoes.preco')//Buscamos o maior valor de preço entre produtos customizados
+									->join('produtos_especificacoes','produtos_especificacoes.medida_id = medidas.id')
+									->where('medidas.id', $medida_id)
+									->where('medidas.ativo', true)
+									->first();
+
+
+				}
+
+
 }

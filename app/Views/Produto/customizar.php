@@ -50,7 +50,7 @@
                   </div>
 
                 <div class="col-md-6 ">
-                  <div id="imagemPrimeiroProduto" style="margin-bottom: 1rem">
+                  <div id="imagemPrimeiroProduto" style="margin-top:1em; margin-bottom: 1rem">
                           <img class="img-responsive center-block d-block mx-auto" src="<?php echo site_url("web/src/assets/img/interoga.jpg"); ?>" width="200" alt="Escolha  o produto">
 
                   </div>
@@ -84,6 +84,18 @@
 
                 </div>
 
+
+                <div class="row">
+                    <div class="col-md-6">
+    <div id="valor_produto_customizavel" style="margin-top:1.5em;font-size: 28px;color: #990100;font-family: 'Montserrat-Bold';">
+                          <!--- Aqui vai ser renderizado o valor do produto -->
+
+                      </div>
+
+                    </div>
+
+                </div>
+
                 <div class="row" style="margin-top: 3em; margin-bottom:3em;">
                   <div class="col-md-6">
 
@@ -93,8 +105,25 @@
                       </select>
                   </div>
 
-                </div>
+                    <div class="col-md-6">
 
+                      <div id="boxInfoExtras"style="display:none">
+                        <label>Extras</label>
+
+                           <div class="radio"><label><input type="radio" class="extra" name="extra" checked="">Sem extra</label></div>
+                           <div id="extras">
+
+                              <!-- Aqui serão rendederizados os extras pprodutos, via jjavjavascript -->
+                           </div>
+
+                      </div>
+
+                </div>
+              </div>
+
+              <div>
+                <input type="hidden" id="extra_id" name="extra_id" placeholder="extra_id_hidden">
+              </div>
                 <div class="row">
                   <div class="col-sm-3">
                       <input  id="btn-adiciona"type="submit" class="btn btn-success " style="margin-top: 1rem" value="Adicionar">
@@ -121,8 +150,10 @@ $(document).ready(function(){
 
   $("#btn-adiciona").prop("disabled", true);
 
-  $("#btn-adiciona").prop("value", "Seleccione um tamanho");
+  $("#btn-adiciona").prop("value", "Selecione um tamanho");
 
+  $("#segunda_metade").html('<option>Escolha a primeira metade</option>');
+  $("#tamanho").html('<option>Escolha a segunda metade</option>');
 
   $("#primeira_metade").on('change', function(){
 
@@ -133,6 +164,14 @@ $(document).ready(function(){
 
      $("#imagemPrimeiroProduto").html(
        '<img class="img-responsive center-block d-block mx-auto" src="<?php echo site_url("web/src/assets/img/interoga.jpg"); ?>" width="200" alt="Escolha o produto">');
+         $("#valor_produto_customizavel").html('');
+         $("#tamanho").html('<option>Escolha a segunda metade</option>');
+
+                    $("#boxInfoExtras").hide();
+                    $("#extras").html('');
+
+        $("#btn-adiciona").prop("disabled", true);
+        $("#btn-adiciona").prop("value", "Selecione um tamanho");
 
        if (primeira_metade) {
          $.ajax({
@@ -177,13 +216,19 @@ $(document).ready(function(){
 
 $("#segunda_metade").on('change', function(){
 
-
         var primeiro_produto_id = $("#primeira_metade").val();
         var segundo_produto_id = $(this).val();
         $("#imagemSegundoProduto").html(
           '<img class="img-responsive center-block d-block mx-auto" src="<?php echo site_url("web/src/assets/img/interoga.jpg"); ?>" width="200" alt="Escolha o produto">');
 
+          $("#valor_produto_customizavel").html('');
+          $("#tamanho").html('<option>Escolha a segunda metade</option>');
 
+                     $("#boxInfoExtras").hide();
+                     $("#extras").html('');
+
+         $("#btn-adiciona").prop("disabled", true);
+         $("#btn-adiciona").prop("value", "Selecione um tamanho");
           if(primeiro_produto_id && segundo_produto_id){
 
             $.ajax({
@@ -196,16 +241,70 @@ $("#segunda_metade").on('change', function(){
                  segundo_produto_id: segundo_produto_id,
                },
 
-               beforeSend: function(data){
-
-
-               },
-
                success: function (data){
 
                  if (data.imagemSegundoProduto){
                  $("#imagemSegundoProduto").html(
                    '<img class="img-responsive center-block d-block mx-auto" src="<?php echo site_url("produto/imagem/"); ?>' + data.imagemSegundoProduto + '" width="200" alt="Escolha o produto"/>');
+                 }
+                 if(data.medidas){
+                     $("#tamanho").html('<option>Escolha o tamanho</option>');
+
+                     $(data.medidas).each(function(){
+                         var option = $('<option />');
+                         option.attr('value', this.id).text(this.nome);
+                         $("#tamanho").append(option);
+                     });
+                 }else{
+                   $("#tamanho").html('<option>Escolha a segunda metade </option>');
+                 }
+
+                 if(data.extras){
+                   $("#boxInfoExtras").show();
+
+                   $(data.extras).each(function(){
+                    var input = "<div class='radio'><label><input type='radio' class='extra' name='extra' data-extra='"+ this.id + "' value='"+ this.preco + "'>"+ this.nome +"</label></div>"
+                       $("#extras").append(input);
+                   });
+
+                   ///Habilita o botão submit enquanto não e escolhido o extra///
+
+                   $(".extra").on('click', function(){
+
+                        var extra_id = $(this).attr('data-extra');
+
+                          $("#extra_id").val(extra_id);
+
+                          ///Capituramos o tamanho escolhido ///
+                        var medida_id = $("#tamanho").val();
+                        if($.isNumeric(medida_id)){
+
+                          $.ajax({
+
+                            type: 'get',
+                            url: '<?php echo site_url('produto/exibevalor');?>',
+                            dataType: 'json',
+
+                            data: {
+                              medida_id: medida_id,
+                              extra_id: $("#extra_id").val(),
+                            },
+
+                            success: function(data){
+
+                              if(data.preco){
+                                $("#valor_produto_customizavel").html('R$ ' + data.preco);
+                                $("#btn-adiciona").prop("disabled", false);
+                                $("#btn-adiciona").prop("value", "Adicionar ao carrinho");
+                              }
+
+                            },
+
+                          });
+
+                        }
+                     });
+
                  }
 
                },
@@ -215,7 +314,43 @@ $("#segunda_metade").on('change', function(){
 
      });
 
+     $("#tamanho").on('change', function (){
+       $("#btn-adiciona").prop("disabled", true);
+
+       $("#btn-adiciona").prop("value", "Selecione um tamanho");
+
+       var medida_id = $(this).val();
+
+         $("#valor_produto_customizavel").html('');
+
+             if(medida_id){
+               $.ajax({
+
+                 type: 'get',
+                 url: '<?php echo site_url('produto/exibevalor');?>',
+                 dataType: 'json',
+
+                 data: {
+                   medida_id: medida_id,
+                   extra_id: $("#extra_id").val(),
+                 },
+
+                 success: function(data){
+
+                   if(data){
+                     $("#valor_produto_customizavel").html('R$ ' + data.preco);
+                     $("#btn-adiciona").prop("disabled", false);
+                     $("#btn-adiciona").prop("value", "Adicionar ao carrinho");
+                   }
+
+                 },
+
+               });
+             }
+     });
+
 });
+
 
 
 </script>

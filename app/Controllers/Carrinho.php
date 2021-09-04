@@ -11,6 +11,8 @@ class Carrinho extends BaseController
 	private $produtoEspecificaoModel;
 	private $extraModel;
 	private $produtoModel;
+	private $medidaModel;
+	private $acao;
 
 
 
@@ -21,6 +23,7 @@ class Carrinho extends BaseController
 		$this->produtoEspecificaoModel = new \App\Models\ProdutoEspecificacaoModel();
 		$this->extraModel = new \App\Models\ExtraModel();
 		$this->produtoModel = new \App\Models\ProdutoModel();
+		$this->medidModel = new \App\Models\MedidaModel();
 
 		$this->acao = service('router')->methodName();
 
@@ -149,6 +152,98 @@ class Carrinho extends BaseController
 						return redirect()->back();
 		}
 	}
+
+public function especial(){
+
+	if($this->request->getMethod() === 'post'){
+
+		$produtoPost = $this->request->getPost();
+
+		$this->validacao->setRules([
+				'primeira_metade' => ['label' => 'Primeiro produto', 'rules' => 'required|greater_than[0]'],
+				'segunda_metade' => ['label' => 'Segundo produto', 'rules' => 'required|greater_than[0]'],
+				'tamanho' => ['label' => 'Tamanho do  produto', 'rules' => 'required|greater_than[0]'],
+
+	]);
+
+		if(!$this->validacao->withRequest($this->request)->run()){
+
+			return redirect()->back()
+			->with('errors_model', $this->validacao->getErrors())
+			->with('atencao', 'Por favor verifique, os erros a baixo e tente nnovamente')
+			->withInput();
+		  }
+
+
+
+		$primeiroProduto = $this->produtoModel->select(['id', 'nome', 'slug'])
+										->where('id', $produtoPost['primeira_metade'])
+										->first();
+
+				if($primeiroProduto == null){
+
+					return redirect()->back()
+					 //Quando ouver fraude no  forms chave slugs
+					->with('fraude', 'Não conseguimos processar sua solicitação. Por favor, entre em contato com nossa equipe e informe o código de erro: <strong>ERRO-ADD-CUSTOM-10001</strong>');
+
+
+				}
+
+				$segundoProduto = $this->produtoModel->select(['id', 'nome', 'slug'])
+												->where('id', $produtoPost['segunda_metade'])
+												->first();
+
+						if($segundoProduto == null){
+
+							return redirect()->back()
+							 //Quando ouver fraude no  forms chave slugs
+							->with('fraude', 'Não conseguimos processar sua solicitação. Por favor, entre em contato com nossa equipe e informe o código de erro: <strong>ERRO-ADD-CUSTOM-20002</strong>');//Fraude no form .. Chave $produto['primeira metade']
+
+						}
+							// Converyendo os objetos para  array//
+						$primeiroProduto = $primeiroProduto->toArray();
+						$segundoProduto = $segundoProduto->toArray();
+
+					//	$produtoPost['extra_id'] = 499;
+
+						if($produtoPost['extra_id'] && $produtoPost['extra_id'] != ""){
+
+							$extra = $this->extraModel->where('id', $produtoPost['extra_id'])->first();
+
+							if($extra == null){
+
+								return redirect()->back()
+								 //Quando ouver fraude no forms extras
+								->with('fraude', 'Não conseguimos processar sua solicitação. Por favor, entre em contato com nossa equipe e informe o código de erro: <strong>ERRO-ADD-CUSTOM-303</strong>');//Fraude no form .. Chave $produto['segunda metade']
+
+							}
+
+						}
+							/*
+							/ Recuperamos o valor do produto de acordo com o tamanho escolhido/
+							*/
+
+							$produtoPost['tamanho'] = 999;
+							 $valorProduto = $this->medidaModel->exibeValor($produtoPost['tamanho']);
+
+							 if($valorProduto->preco == null){
+
+								 return redirect()->back()
+									//Quando ouver fraude no forms extras
+								 ->with('fraude', 'Não conseguimos processar sua solicitação. Por favor, entre em contato com nossa equipe e informe o código de erro: <strong>ERRO-ADD-CUSTOM-404</strong>');//Fraude no form .. Chave $produto['tamanho']
+
+							 }
+
+						dd($valorProduto->preco);
+
+
+    	}else{
+		return redirect()->back();
+	}
+
+}
+
+
 
 	//Retono da  função com array
   private function atualizaProduto(string $acao, string $slug, int $quantidade, array $produtos){
