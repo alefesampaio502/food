@@ -23,7 +23,7 @@ class Carrinho extends BaseController
 		$this->produtoEspecificaoModel = new \App\Models\ProdutoEspecificacaoModel();
 		$this->extraModel = new \App\Models\ExtraModel();
 		$this->produtoModel = new \App\Models\ProdutoModel();
-		$this->medidModel = new \App\Models\MedidaModel();
+		$this->medidaModel = new \App\Models\MedidaModel();
 
 		$this->acao = service('router')->methodName();
 
@@ -223,10 +223,11 @@ public function especial(){
 							/ Recuperamos o valor do produto de acordo com o tamanho escolhido/
 							*/
 
-							$produtoPost['tamanho'] = 999;
-							 $valorProduto = $this->medidaModel->exibeValor($produtoPost['tamanho']);
+					    // $produtoPost['tamanho'] = 999;
+							 $medida = $this->medidaModel->exibeValor($produtoPost['tamanho']);
 
-							 if($valorProduto->preco == null){
+							//dd($valorProduto);
+							 if($medida->preco == null){
 
 								 return redirect()->back()
 									//Quando ouver fraude no forms extras
@@ -234,8 +235,14 @@ public function especial(){
 
 							 }
 
-						dd($valorProduto->preco);
+							 ///Criamos o slugs para indenfificamos a existencia do carrinho na hora de adicionar
+							 $produto['slug'] = mb_url_title($medida->nome .'-metade-'. $primeiroProduto['slug']. '-metade-'. $segundoProduto['slug'] . '-' . (isset($extra) ? 'com extra-'. $extra->nome : ''), '-', true);
 
+
+							 							//Criamos o nome do produto aparti da expeficicação do extras
+							 $produto['slug'] = mb_url_title($medida->nome .'-metade-'. $primeiroProduto['slug']. '-metade-'. $segundoProduto['slug'] . '-' . (isset($extra) ? 'com extra-'. $extra->nome : ''), '-', true);
+
+							dd($medida->valor);
 
     	}else{
 		return redirect()->back();
