@@ -30,7 +30,21 @@ class Carrinho extends BaseController
 	}
 	public function index()
 	{
-		//
+		$data = [
+
+			'titulo' => 'Meu carrinho de compras'
+		];
+
+		if (session()->has('carrinho') && count(session()->get('carrinho')) > 0){
+
+		$data['carrinho'] = json_decode(json_encode(session()->get('carrinho')), false);
+
+		}
+
+		return view('Carrinho/index', $data);
+
+
+
 	}
 
 	public function adicionar(){
@@ -240,9 +254,53 @@ public function especial(){
 
 
 							 							//Criamos o nome do produto aparti da expeficicação do extras
-							 $produto['slug'] = mb_url_title($medida->nome .'-metade-'. $primeiroProduto['slug']. '-metade-'. $segundoProduto['slug'] . '-' . (isset($extra) ? 'com extra-'. $extra->nome : ''), '-', true);
+							 $produto['nome'] = $medida->nome .' metade '. $primeiroProduto['nome']. ' metade '. $segundoProduto['nome'] . ' ' . (isset($extra) ? 'com extra '. $extra->nome : '');
 
-							dd($medida->valor);
+							 //Definimos o preço, Quantidade e tamanho do pproduto
+								$preco = $medida->preco + (isset($extra) ? $extra->preco : 0);
+
+									$produto['preco'] = number_format($preco, 2);
+									$produto['quantidade'] = 1;//Sempre será um
+									$produto['tamanho'] = $medida->nome;
+
+
+									//Iniciamos a inserçao do  pproduto para o carrinho
+									if(session()->has('carrinho')){
+										// Existem inserção no carrinho na sessão//
+
+											// Recupera os intem do carrinho na sessão//
+											$produtos = session()->get('carrinho');
+
+												// Recupera os apenas os slug dos prdutos do carrinho//
+												$produtosSlugs = array_column($produtos, 'slug');
+
+												if(in_array($produto['slug'], $produtosSlugs)) {
+
+												// Já existe o produto no carrinho... incliementamos a quantidade//
+
+												// chamamos a função inclementea a quantidadede de produto incliementamos a quantidade no carrinho//
+				                 $produtos = $this->atualizaProduto($this->acao, $produto['slug'], $produto['quantidade'], $produtos);
+
+												 // SSobre escrevemos asessão carrinho com o array com arra  $produtos que foi iincliementado (alterado) //
+												session()->set('carrinho', $produto);
+
+												}else{
+
+													/* Não existe o produto no carrinho... pode  a aadicionar//
+													 aadicionarmos no carrinho $produto Notem que  o push adiciona na sessão  'carrinho' um array [$produto]*/
+													session()->push('carrinho', [$produto]);
+
+												}
+
+									}else{
+										// Não existem inserção no carrinho na sessão//
+
+										$produtos[] = $produto;
+										session()->set('carrinho', $produtos);
+
+									}
+
+						  return redirect()->back()->with('sucesso','Produto adicionado com sucesso!');
 
     	}else{
 		return redirect()->back();
@@ -255,7 +313,7 @@ public function especial(){
 	//Retono da  função com array
   private function atualizaProduto(string $acao, string $slug, int $quantidade, array $produtos){
 
-		$produtos  = array_map(function($linha) use($acao, $slug, $quantidade) {
+		$produtos  = array_map(function ($linha) use ($acao, $slug, $quantidade) {
 
 			if ($linha['slug'] == $slug){
 
@@ -263,6 +321,12 @@ public function especial(){
 					 $linha['quantidade'] += $quantidade;
 
 				}
+
+				if ($acao === 'especial'){
+					 $linha['quantidade'] += $quantidade;
+
+				}
+
 
 				if($acao === 'atualizar'){
 

@@ -129,7 +129,6 @@
                       <input  id="btn-adiciona"type="submit" class="btn btn-success " style="margin-top: 1rem" value="Adicionar">
                   </div>
                   <div class="col-sm-3"style="margin-top: 1rem">
-
                       <a href="<?php echo site_url("produto/detalhes/$produto->slug");?>" class="btn btn-info">Voltar</a>
                   </div>
                 </div>
@@ -263,7 +262,7 @@ $("#segunda_metade").on('change', function(){
                    $("#boxInfoExtras").show();
 
                    $(data.extras).each(function(){
-                    var input = "<div class='radio'><label><input type='radio' class='extra' name='extra' data-extra='"+ this.id + "' value='"+ this.preco + "'>"+ this.nome +"</label></div>"
+                    var input = "<div class='radio'><label><input type='radio' class='extra' name='extra' data-extra='"+ this.id + "' value='"+ this.preco + "'>"+ this.nome + ' - R$ ' +this.preco +"</label></div>"
                        $("#extras").append(input);
                    });
 
