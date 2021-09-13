@@ -6,7 +6,7 @@ use App\Libraries\Token;
 	{
 				 protected $table                	= 'usuarios';
 				 protected $returnType           	= 'App\Entities\Usuario';
-				 protected $allowedFields        	= ['nome','email','cpf','telefone','password','reset_hash','reset_expira_em'];
+				 protected $allowedFields        	= ['nome','email','cpf','telefone','password','reset_hash','reset_expira_em','ativacao_hash'];
 
 				 //Datas
 				 protected $useTimestamps 				= true;
@@ -88,6 +88,10 @@ use App\Libraries\Token;
 
 			}
 
+	public function desabilitaValidacaoTelefone(){
+			unset($this->validationRules['telefone']);
+	}
+
    public function desfazerExclusao(int $id){
 				return $this->protect(false)
 				->where('id', $id)
@@ -124,4 +128,22 @@ use App\Libraries\Token;
 			   }
 
 		 }
+
+   public function ativaContaPeloToken(string $token){
+
+		  $token = new Token ($token);
+
+			$token_hash = $token->getHash();
+
+			$usuario = $this->where('ativacao_hash', $token_hash)->first();
+
+			   if($usuario != null){
+
+					 $usuario->ativar();
+
+					 $this->protect(false)->save($usuario);
+
+				 }
+
+	 }
 	}

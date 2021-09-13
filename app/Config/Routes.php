@@ -34,6 +34,7 @@ $routes->setAutoRoute(true);
 // route since we don't have to scan directories.
 $routes->get('/', 'Home::index');
 $routes->get('login', 'Login::novo',['filter' => 'visitante']);
+$routes->get('registrar', 'Registrar::novo',['filter' => 'visitante']);
 
 
 //Rotas em grupos para definir um nome surgestivo ao Controllers
@@ -48,17 +49,13 @@ $routes->group('admin', function($routes)
 		//rotas para atualizar  módulo forma de FormasPagamento
     $routes->add('formas/show/(:num)', 'Admin\FormasPagamento::show/$1');
     $routes->add('formas/editar/(:num)', 'Admin\FormasPagamento::editar/$1');
-	//Para o post
+		//Para o post
     $routes->post('formas/atualizar/(:num)', 'Admin\FormasPagamento::atualizar/$1');
 		//exclur forma de pagamento
-
 		$routes->add('formas/desfazerexclusao/(:num)', 'Admin\FormasPagamento::desfazerExclusao/$1');
-
 		$routes->match(['get','post'], 'formas/excluir/(:num)','Admin\FormasPagamento::excluir/$1');
-
-
 		$routes->match(['get','post'], 'expedientes','Admin\Expedientes::expedientes');
-		 //Desfazer exclusão
+		//Desfazer exclusão
 });
 
 

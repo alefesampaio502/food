@@ -15,9 +15,20 @@ class Login extends BaseController {
 		if($this->request->getMethod() === 'post'){
 			$email = $this->request->getPost('email');
 			$password = $this->request->getPost('password');
+
 			  $autenticacao = service('autenticacao');
          if($autenticacao->login($email, $password)){
 					 $usuario = $autenticacao->pegaUsuarioLogado();
+
+					 if(!$usuario->is_admin){
+
+						 if(session()->has('carrinho')){
+							  return redirect()->to(site_url('checkout'));
+
+						 }
+
+						 return redirect()->to(site_url('/'));
+				   	 }
 					   return redirect()->to(site_url('admin/home'))->with('sucesso',"Olá $usuario->nome, que bom está de volta");
 				}else{
 					  return redirect()

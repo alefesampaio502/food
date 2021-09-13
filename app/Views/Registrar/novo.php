@@ -22,50 +22,44 @@
               <div class="col-md-12 ">
                 <p><?php echo $titulo; ?></p>
                 <?php if(session()->has('errors_model')): ?>
-
                   <ul style="margin-left: -1.6em !important; ">
                        <?php foreach (session('errors_model') as $error): ?>
-
                          <li class="text-danger"><?php echo $error; ?></li>
-
                        <?php endforeach; ?>
-
                   </ul>
                 <?php endif;?>
 
-                <?php echo form_open('login/criar'); ?>
-                  <div class="form-group" style="margin-top: 2em;">
-                    <input type="email" name="email" value="<?php echo old('email');?>" class="form-control form-control-lg" id="exampleInputEmail1" placeholder="Digite o seu e-mail">
-                  </div>
-                  <div class="form-group" style="margin-top: 1em;">
-                    <input type="password" name="password" class="form-control form-control-lg" id="exampleInputPassword1" placeholder="Digite a sua sennha">
-                  </div>
-                  <div class="mt-3 text-center">
-                  <button type="submit" class="btn btn-block btn-food" style="margin-top: 2em; padding:13px;">Entrar</button>
-                  </div>
-                  <div class=" mt-5 my-2  align-items-center center">
-                     <div class="form-check" style="margin-top: 1em;">
-                     <a href="<?php echo site_url('password/esqueci'); ?>" class="auth-link text-black mb-5">Esqueci a minha senha?</a>
-                   </div>
-                  <div class="text-center mt-5 font-weight-light" style="margin-top: 1em;">
-                    Ainda não tem uma conta? <a href="<?pphp echo base_url('registrar');?>" class="text-primary">Criar conta</a>
-                  </div>
-                <?php echo form_close(); ?>
+                <?php echo form_open("registrar/criar");?>
+              <div class="form-group">
+                <label for="nome">Nome completo</label>
+                <input type="text" class="form-control" name="nome" value="<?php old('nome');?>">
               </div>
+              <div class="form-group">
+                <label for="nome">E-mail válido</label>
+                <input type="email" class="form-control" name="email" value="<?php old('email');?>">
+              </div>
+              <div class="form-group">
+                <label for="nome">CPF válido</label>
+                <input type="text" class="cpf form-control" name="cpf" value="<?php old('cpf');?>">
+              </div>
+              <div class="form-group">
+                <label>Sua senha</label>
+                <input type="password"  name="password" class="form-control" placeholder="Password">
+              </div>
+              <div class="form-group">
+                <label>Confirme sua senha</label>
+                <input type="password"  name="password_confirmation" class="form-control" placeholder="Password">
+              </div>
+              <button type="submit" class="btn btn-block btn-food" style="margin-top: 3em;">Criar minha conta</button>
+              <?php echo form_close();?>
               </div>
             </div>
         </div>
         <!-- end product -->
-
-
 </div>
-
 <?php $this->endSection(); ?>
-
 <?php echo $this->section('scripts'); ?>
 <script src="<?php echo base_url('admin/vendors/mask/jquery.mask.min.js');?>"></script>
 <script src="<?php echo base_url('admin/vendors/mask/app.js');?>"></script>
-
 <!-- aqui enviamos para o templete principal os scripts -->
-
 <?php $this->endSection(); ?>

@@ -38,4 +38,18 @@ public function iniciaPasswordReset(){
 
 
   }
+
+ public function iniciaAtivacao(){
+
+	 $token = new Token();
+	 $this->token = $token->getValue();
+	 $this->ativacao_hash = $token->getHash();
+ }
+public function ativar(){
+
+	$this->ativo = true;
+	$this->ativacao_hash = null;
+
+  }
+
 }

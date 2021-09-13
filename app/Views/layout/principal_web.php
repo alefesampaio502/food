@@ -42,6 +42,18 @@
     <link rel="mask-icon" href="<?php echo site_url('web/'); ?>src/assets/img/favicon/safari-pinned-tab.svg" color="#5bbad5" />
     <meta name="msapplication-TileColor" content="#990100" />
     <meta name="theme-color" content="#ffffff" />
+      <style>
+          .navbar-nav > li >a{
+            line-height:30px;
+          }
+          .btn-food{
+            background-color:#990100;
+            color: white !important;
+            font-family: 'Montserrat-Bold';
+          }
+
+      </style>
+
     <?= $this->renderSection('estilos') ?>
 
 </head>
@@ -234,9 +246,26 @@
 
                                              <li><a class="page-scroll" href="#reservation">Bairros Atendidos</a></li>
                                               <li><a class="page-scroll" href="#footer">Contato</a></li>
-                                              <li><a class="page-scroll" href="#about_us">Minha conta </a></li>
 
-                                              <li><a class="page-scroll" href="#menu">Sair</a></li>
+                                              <?php if(session()->has('carrinho') && count(session()->get('carrinho')) > 0):?>
+                                              <li>
+                                                <a class="page-scroll" href="<?php echo site_url('carrinho');?>">
+                                                  <i class="fa fa-shopping-cart fa fa-2x"></i>
+                                                  <span style="font-size: 25px !important;">
+                                                    <?php echo count(session()->get('carrinho'));?>
+                                                  </span>
+
+                                                </a>
+                                              </li>
+                                              <?php endif; ?>
+                                              <?php if(usuario_logado()):?>
+                                                  <li><a class="page-scroll" href="<?php echo site_url('conta'); ?>">Minha conta</a></li>
+                                                  <li><a class="page-scroll" href="<?php echo site_url('login/logout'); ?>">Sair</a></li>
+                                              <?php else: ?>
+                                                  <li><a class="page-scroll" href="<?php echo site_url('login'); ?>">Entrar</a></li>
+                                                  <li><a class="page-scroll" href="<?php echo site_url('registrar'); ?>">Registrar-se</a></li>
+                                              <?php endif; ?>
+
                                           </ul>
                                       </div>
                                   </div>
