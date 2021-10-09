@@ -32,7 +32,10 @@
       <div class="ui-widget">
           <input type="text" id="query" name="query" class="form-control bg-light mb-5"  placeholder="Pesquisa por uma categoria">
         </div>
+        <?php if(empty($categorias)):?>
+          <p>Não há dados para exibir</p>
 
+        <?php else: ?>
       <div class="table-responsive">
         <table class="table table-hover">
           <thead>
@@ -64,6 +67,7 @@
           </tbody>
         </table>
       </div>
+    <?php endif; ?>
 
       <div class="mt-3">
        <?= $pager->links(); ?>

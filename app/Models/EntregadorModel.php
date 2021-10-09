@@ -28,7 +28,6 @@ class EntregadorModel extends Model
 
 
 
-
 	// Dates
 	protected $useTimestamps        = true;
 	protected $dateFormat           = 'datetime';
@@ -99,4 +98,26 @@ class EntregadorModel extends Model
 						 ->set('deletado_em', null)
 						 ->update();
 					 }
+
+					 public function recuperTotalEntregadoresAtivo(){
+		 	 		 return $this->where('ativo', true)
+		 	 								 ->countAllResults();// Pegar objetos inteiros para busca de usuários
+
+
+		 	 	 }
+
+
+				 public function recuperaEntregadoresMaisTop(int $quantidade){
+
+	 				return  $this->select('entregadores.id,entregadores.nome, entregadores.imagem, COUNT(*) AS entregas')
+	 							->join('pedidos', 'entregadores.id = pedidos.entregador_id')
+	 				     	->where('pedidos.situacao', 2)//pedidos entregues
+	 							->limit($quantidade)
+	 							->groupBy('entregadores.nome')
+	 							->orderBy('entregas', 'DESC')
+	 						  ->find(); // O Limit só funciona com find()
+
+
+
+	 			}
 }

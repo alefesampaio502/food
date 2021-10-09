@@ -12,6 +12,7 @@ class Produto extends BaseController
 	private $produtoExtraModel;
 	private $medidaModel;
 	private $extraModel;
+	private $sistemaModel;
 
 
 public function __construct(){
@@ -20,6 +21,7 @@ public function __construct(){
 	$this->produtoExtraModel = new \App\Models\ProdutoExtraModel();
 	$this->medidaModel = new \App\Models\MedidaModel();
 	$this->extraModel = new \App\Models\ExtraModel();
+	$this->sistemaModel = new \App\Models\SistemaModel();
 
 
 }
@@ -37,7 +39,9 @@ public function __construct(){
 			'titulo' => "Detalhando o produto $produto->nome",
 
 			'produto' => $produto,
+			'produtos' => $this->produtoModel->buscaProdutosWebHome(),
 			'especificacoes' => $this->produtoEspecificacaoModel->buscaEspecificacoesDoProdutoDetalhes($produto->id),
+			'sistemas' => $this->sistemaModel->where('ativo', true)->findAll(),
 
 		];
 
@@ -68,7 +72,7 @@ public function __construct(){
 		$data = [
 
 			'titulo' => "Customizando o produto $produto->nome",
-
+			'produtos' => $this->produtoModel->buscaProdutosWebHome(),
 			'produto' => $produto,
 			'especificacoes' => $this->produtoEspecificacaoModel->buscaEspecificacoesDoProdutoDetalhes($produto->id),
 			'opcoes' => $this->produtoModel->exibeOpcoesProdutosParaCustomizar($produto->categoria_id),
@@ -184,7 +188,7 @@ public function __construct(){
 
 
 			$medida = $this->medidaModel->exibeValor($get['medida_id']);
-			    
+
 					if($medida->preco == null){
 						return $this->response->setJSON([]);
 

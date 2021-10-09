@@ -3,6 +3,18 @@
 <?php echo $this->section('titulo'); ?>
 
 <?php echo $titulo; ?>
+<style>
+
+@media only screen and (max-width: 767px){
+
+    #registro{
+      min-width: 100% !important;
+
+    }
+
+
+}
+</style>
 
 <?php $this->endSection(); ?>
 
@@ -17,9 +29,9 @@
 
 <div class="container section" id="menu" data-aos="fade-up" style="margin-top: 3em">
         <!-- product -->
-        <div class="product-content product-wrap clearfix product-deatil center-block" style="max-width: 40%">
+        <div id="registro" class="product-content product-wrap clearfix product-deatil center-block" style="max-width: 60%">
             <div class="row">
-              <div class="col-md-12 ">
+
                 <p><?php echo $titulo; ?></p>
                 <?php if(session()->has('errors_model')): ?>
                   <ul style="margin-left: -1.6em !important; ">
@@ -53,7 +65,7 @@
               <button type="submit" class="btn btn-block btn-food" style="margin-top: 3em;">Criar minha conta</button>
               <?php echo form_close();?>
               </div>
-            </div>
+            
         </div>
         <!-- end product -->
 </div>

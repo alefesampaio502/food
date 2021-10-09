@@ -23,11 +23,16 @@ class CriaTabelaProdutos extends Migration
 												'nome'       => [
 																'type'       => 'VARCHAR',
 																'constraint' => '255',
-																
+
 												],
 												'slug'       => [
 																'type'       => 'VARCHAR',
 																'constraint' => '255',
+												],
+
+												'desconto'       => [
+																'type'       => 'VARCHAR',
+																'constraint' => '155',
 												],
 
 												'ingredientes'       => [

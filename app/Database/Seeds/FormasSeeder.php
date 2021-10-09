@@ -13,11 +13,11 @@ class FormasSeeder extends Seeder
 		$forma = [
 
 			'nome' => 'Dinheiro',
-			  'ativo' => true,
+			'ativo' => true,
 
 		];
 		$formaModel->skipValidation(true)->insert($forma);
 
-		dd($formaModel->errors());
+
 	}
 }

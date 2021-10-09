@@ -18,27 +18,30 @@
 <div class="container section" id="menu" data-aos="fade-up" style="margin-top: 3em">
     <div class="col-sm-12 col-md-12 col-lg-12">
         <!-- product -->
+        <div class="container row">
+          <?php if($pedido->situacao == 0):?>
+            <div class="col-md-12 col-xs-12">
+                <h3 class="section-title pull-left"><?php echo esc($titulo);?></h3>
+            </div>
+            <?php endif; ?>
+            <div class="col-md-12 col-xs-12">
+              <h4> No momento o seu pedido está com o status de <?php echo $pedido->exibeSituacaoPedido(); ?></h4>
+
+            </div>
+                        <?php if($pedido->situacao != 3):?>
+                          <div class="col-md-12 col-xs-12">
+                              <h4>Quando ocorrer uma mudança no status do seu ppedido, nós notificaremos você por e-mail.</h4>
+                          </div>
+
+                        <?php endif; ?>
+
+        </div>
         <div class="product-content product-wrap clearfix product-deatil">
             <div class="row">
-              <?php if($pedido->situacao == 0):?>
-                <div class="col-md-12 col-xs-12">
-                    <h3 class="section-title pull-left"><?php echo esc($titulo);?></h3>
-                </div>
-                <?php endif; ?>
-                <div class="col-md-12 col-xs-12">
-                  <h4> No momento o seu pedido está com o status de <?php echo $pedido->exibeSituacaoPedido(); ?></h4>
 
-                </div>
-                            <?php if($pedido->situacao != 3):?>
-                              <div class="col-md-12 col-xs-12">
-                                  <h4>Quando ocorrer uma mudança no status do seu ppedido, nós notificaremos você por e-mail.</h4>
-                              </div>
-
-                            <?php endif; ?>
               <div class="col-md-12">
                 <ul class="list-group">
-
-
+                  <?php $produtos = unserialize($pedido->produtos); ?>
                   <?php foreach ($produtos as $produto): ?>
 
                   <li class="list-group-item">

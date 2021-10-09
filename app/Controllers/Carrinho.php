@@ -13,8 +13,11 @@ class Carrinho extends BaseController
 	private $produtoModel;
 	private $medidaModel;
 	private $bairroModel;
+	private $sistemaModel;
 	private $acao;
 
+	private $horaAtual;
+	private $expedienteHoje;
 
 
 	public function __construct(){
@@ -26,6 +29,10 @@ class Carrinho extends BaseController
 		$this->produtoModel = new \App\Models\ProdutoModel();
 		$this->medidaModel = new \App\Models\MedidaModel();
 		$this->bairroModel = new \App\Models\BairroModel();
+		$this->sistemaModel = new \App\Models\SistemaModel();
+
+		$this->horaAtual = date('H:i');
+		//$this->expedienteHoje = $this->recuperaExpedienteDeHoje();
 
 		$this->acao = service('router')->methodName();
 
@@ -33,7 +40,9 @@ class Carrinho extends BaseController
 	public function index(){
 		$data = [
 
-			'titulo' => 'Meu carrinho de compras'
+			'titulo' => 'Meu carrinho de compras',
+			'produtos' => $this->produtoModel->buscaProdutosWebHome(),
+				'sistemas' => $this->sistemaModel->where('ativo', true)->findAll(),
 		];
 
 		if(session()->has('carrinho') && count(session()->get('carrinho')) > 0){
@@ -53,6 +62,18 @@ class Carrinho extends BaseController
 
 	public function adicionar(){
 		 if($this->request->getMethod() === 'post'){
+			 $this->expedienteHoje = expedienteHoje();
+
+			 if($this->expedienteHoje->situacao == false){
+				 return redirect()->back()
+          //Quando ouver fraude no forms
+ 				->with('expediente', 'Atenção: Hoje não estamos funcionando, fechado para dar uma geral na casa');
+			 }
+			 if($this->horaAtual > $this->expedienteHoje->fechamento || $this->horaAtual < $this->expedienteHoje->abertura){
+				  return redirect()->back()
+				 ->with('expediente', "<b>Atenção:</b> Nosso horário de atendimento para a ".$this->expedienteHoje->dia_descricao. " é das ".$this->expedienteHoje->abertura." às ".$this->expedienteHoje->fechamento);
+
+			 }
 
 	    $produtoPost = $this->request->getPost('produto');
 
@@ -177,6 +198,19 @@ class Carrinho extends BaseController
 public function especial(){
 
 	if($this->request->getMethod() === 'post'){
+		$this->expedienteHoje = expedienteHoje();
+
+		if($this->expedienteHoje->situacao == false){
+			return redirect()->back()
+			 //Quando ouver fraude no forms
+		 ->with('expediente', 'Atenção: Hoje não estamos funcionando, fechado para dar uma geral na casa');
+		}
+		if($this->horaAtual > $this->expedienteHoje->fechamento || $this->horaAtual < $this->expedienteHoje->abertura){
+			 return redirect()->back()
+			->with('expediente', "<b>Atenção:</b> Nosso horário de atendimento para a ".$this->expedienteHoje->dia_descricao. " é das ".$this->expedienteHoje->abertura." às ".$this->expedienteHoje->fechamento);
+
+		}
+
 
 		$produtoPost = $this->request->getPost();
 
@@ -467,7 +501,7 @@ public function consultaCep(){
 
 	 $retorno['valor_entrega'] = 'R$ '.esc(number_format($bairro->valor_entrega, 2));
 
-	 $retorno['bairro'] = '<span class="text-white bg-success" style="padding:10px;"><b>Valor de entrega para o bairro: </b>'
+	 $retorno['bairro'] = '<span class="text-white bg-success" style="padding: 10px;"><b>Valor de entrega para o bairro: </b>'
 	 . esc($consulta->bairro)
 	 .' - '. esc($consulta->localidade)
 	 .' - CEP '. esc($consulta->cep)

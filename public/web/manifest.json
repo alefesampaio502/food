@@ -1,0 +1,28 @@
+{
+  "background_color": "#990100",
+  "dir": "ltr",
+  "display": "browser",
+  "name": "Misteitz iOS",
+  "orientation": "any",
+  "scope": "/",
+  "short_name": "Misteitz iOS",
+  "start_url": "http://localhost/food/public/",
+  "theme_color": "#f9f9f9",
+  "icons": [
+    {
+      "src": "images/256x256.png",
+      "type": "image/png",
+      "sizes": "256x256"
+    },
+    {
+      "src": "images/icons/icon-152x152.png"
+    },
+    {
+      "src": "http://localhost/food/public/web/src/assets/img/favicon/safari-pinned-tab.svg"
+    },
+    {
+      "src": "/favicon.ico",
+      "type": "image/x-icon"
+    }
+  ]
+}

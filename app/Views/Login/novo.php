@@ -4,6 +4,20 @@
 
 <?php echo $titulo; ?>
 
+
+<style>
+
+@media only screen and (max-width: 767px){
+
+    #login{
+      min-width: 100% !important;
+
+    }
+
+
+}
+</style>
+
 <?php $this->endSection(); ?>
 
 <?php echo $this->section('estilos'); ?>
@@ -17,9 +31,9 @@
 
 <div class="container section" id="menu" data-aos="fade-up" style="margin-top: 3em">
         <!-- product -->
-        <div class="product-content product-wrap clearfix product-deatil center-block" style="max-width: 40%">
+        <div id="login" class="product-content product-wrap clearfix product-deatil center-block" style="max-width: 60%">
             <div class="row">
-              <div class="col-md-12 ">
+
                 <p><?php echo $titulo; ?></p>
                 <?php if(session()->has('errors_model')): ?>
 
@@ -48,11 +62,11 @@
                      <a href="<?php echo site_url('password/esqueci'); ?>" class="auth-link text-black mb-5">Esqueci a minha senha?</a>
                    </div>
                   <div class="text-center mt-5 font-weight-light" style="margin-top: 1em;">
-                    Ainda não tem uma conta? <a href="<?pphp echo base_url('registrar');?>" class="text-primary">Criar conta</a>
+                    Ainda não tem uma conta? <a href="<?php echo site_url('registrar'); ?>" class="text-primary">Criar conta</a>
                   </div>
                 <?php echo form_close(); ?>
               </div>
-              </div>
+
             </div>
         </div>
         <!-- end product -->

@@ -25,8 +25,8 @@
               </div>
               <div class="col-md-6">
                 <ul class="list-group">
-                  <?php $total = 0; ?>
 
+                  <?php $total = 0; ?>
                   <?php foreach ($carrinho as $produto): ?>
                     <?php $subTotal = $produto['preco'] * $produto['quantidade'];?>
 
@@ -43,7 +43,7 @@
                   <?php endforeach; ?>
                     <li class="list-group-item">
                       <span>Total de produtos: </span>
-                      <strong><?php echo 'R$&nbsp;'.number_format($total, 2); ?></strong>
+                      <strong><?php echo 'R$&nbsp;'. number_format($total, 2); ?></strong>
                     </li>
                     <li class="list-group-item">
                       <span>Taxa de entrega: </span>
@@ -74,7 +74,7 @@
                 </ul>
               <?php endif;?>
               <p style="font-size: 18px; font-weight: bold;">Escolha a forma de pagamento na entrega</p>
-              <?php echo  form_open('checkout/processar', ['id' => 'form-checkout']); ?>
+              <?php echo form_open('checkout/processar', ['id' => 'form-checkout']); ?>
                <div class="form-row">
                  <?php foreach ($formas as $forma): ?>
                  <div class="radio">
@@ -121,8 +121,8 @@
              </div>
              <hr>
              <div class="form-group col-md-12">
-               <input type="text" id="forma_id" name="checkout[forma_id]" class="form-control"placeholder="checkout[forma_id]">
-               <input type="text" id="bairro_slug" name="checkout[bairro_slug]" class="form-control"placeholder="checkout[bairro_slug]">
+               <input type="hidden" id="forma_id" name="checkout[forma_id]" class="form-control"placeholder="checkout[forma_id]">
+               <input type="hidden" id="bairro_slug" name="checkout[bairro_slug]" class="form-control"placeholder="checkout[bairro_slug]">
              </div>
 
              <div class="form-group col-md-12" style="padding-left: 0;margin-top: 10px;">

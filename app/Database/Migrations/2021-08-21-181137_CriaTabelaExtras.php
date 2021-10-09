@@ -4,8 +4,7 @@ namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
 
-class CriaTabelaExtras extends Migration
-{
+class CriaTabelaExtras extends Migration{
 	public function up()
         {
                 $this->forge->addField([

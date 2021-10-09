@@ -5,9 +5,20 @@ namespace App\Controllers;
 use App\Controllers\BaseController;
 
 class Login extends BaseController {
+	private $produtoModel;
+	private $sistemaModel;
+
+	public function __construct() {
+
+			$this->produtoModel = new \App\Models\ProdutoModel();
+			$this->sistemaModel = new \App\Models\SistemaModel();
+	}
+
 	public function novo(){
 		$data = [
 							'titulo' => 'Entrar com login',
+							'produtos' => $this->produtoModel->buscaProdutosWebHome(),
+							'sistemas' => $this->sistemaModel->where('ativo', true)->findAll(),
 						];
 		return view('Login/novo', $data);
 	}

@@ -8,15 +8,21 @@ class Registrar extends BaseController
 {
 
 private $usuarioModel;
+private $produtoModel;
+private $sistemaModel;
 
 public function __construct(){
 	$this->usuarioModel = new \App\Models\UsuarioModel();
+	$this->produtoModel = new \App\Models\ProdutoModel();
+	$this->sistemaModel = new \App\Models\SistemaModel();
 }
 	public function novo()
 	{
 		$data  = [
 
 				'titulo' => 'Criar nova conta',
+				'produtos' => $this->produtoModel->buscaProdutosWebHome(),
+				'sistemas' => $this->sistemaModel->where('ativo', true)->findAll(),
 		];
 
 		return view('Registrar/novo', $data);
@@ -28,6 +34,7 @@ public function __construct(){
 			$usuario = new 	\App\Entities\Usuario($this->request->getPost());
 
 			$this->usuarioModel->desabilitaValidacaoTelefone();
+
 
 			$usuario->iniciaAtivacao();
 
@@ -54,6 +61,7 @@ public function ativacaoEnviado(){
 	$data  = [
 
 			'titulo' => 'E-mail de ativação da conta enviada para sua caixa de entrada',
+			'produtos' => $this->produtoModel->buscaProdutosWebHome(),
 	];
 
 	return view('Registrar/ativacao_enviado', $data);

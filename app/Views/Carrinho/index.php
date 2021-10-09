@@ -20,7 +20,7 @@
         <!-- product -->
         <div class="product-content product-wrap clearfix product-deatil">
             <div class="row">
-              <?php if(!isset($carrinho)): ?>
+              <?php if(empty($carrinho)): ?>
               <div class="text-center">  <h2 class="text-center">Seu carrinho de compras está vazio</h2>
                 <a href="<?php echo site_url('/');?>" class="btn btn-lg" style="background-color: #990100; color: #fff; margin-top:2em">Voltar</a></div>
               <?php else: ?>
@@ -57,25 +57,20 @@
                         <th class="text-center" scope="row">
                           <?php echo form_open("carrinho/remover", ['class' =>'form-inline']);?>
                           <div class="form-group">
-                          </div>
-
                           <button type="submit" name="produto[slug]" value="<?php echo $produto->slug; ?>" class="btn btn-danger float-right "><i class="fa fa-trash"></i></button>
                           <?php echo form_close(); ?>
                           </th>
-
+                          </div>
                         <td><?php echo word_limiter($produto->nome, 10);?></td>
                         <td><?php echo esc($produto->tamanho);?></td>
                         <td class="text-center">
-
                           <?php echo form_open("carrinho/atualizar", ['class' =>'form-inline']);?>
                           <div class="form-group">
                             <input type="number" class="form-control" name="produto[quantidade]" value="<?php echo $produto->quantidade;?>" min="1" max="10" step="1" required="">
                             <input type="hidden" name="produto[slug]" value="<?php echo $produto->slug;?>">
-
                           </div>
                           <button type="submit" class="btn btn-primary float-right "><i class="fa fa-refresh"></i></button>
                           <?php echo form_close(); ?>
-
                         </td>
                         <td>R$&nbsp;<?php echo esc($produto->preco);?></td>
                         <?php
@@ -88,35 +83,35 @@
                         <tr style="">
                             <td class="text-right border-top:0" colspan="5" style="font-weight: bold;">Total produtos</td>
                             <td  class="text-danger text-danger border-top:0" colspan="5">R$:&nbsp;<?php echo number_format($total, 2);?></td>
-
                         </tr>
                         <tr>
                             <td class="text-right border-top:0" colspan="5" style="font-weight: bold; border: none;">Taxa entrega:</td>
                             <td style="border: none;" class="text-danger border-top:0" colspan="5" id="valor_entrega">Não calculado</td>
-
                         </tr>
                         <tr>
                             <td class="text-right border-top:0" colspan="5" style="font-weight: bold; border: none;">Total pedido:</td>
                             <td style="border: none;" class="text-danger border-top:0" colspan="5" id="total"><?php echo 'R$&nbsp;'. number_format($total, 2);?></td>
-
                         </tr>
                     </tbody>
                   </table>
-                  <div class="form-group col-md-6">
+                  <div class="form-group col-md-7">
                     <label>Consulte a taxa de entrega</label>
                       <input type="text" name="cep" class="cep form-control" placeholder="Informe o seu CEP">
                       <div id="cep" style="margin-top:1em;"></div>
-
                   </div>
                   </div>
-
-
                 <hr>
-                <div class="col-md-12">
-                  <a href="<?php echo site_url("carrinho/limpar");?>" class="btn btn-default" style="font-family: 'Montserrat-Bold';">Limpar carrinho</a>
-                  <a href="<?php echo site_url("/");?>" class="btn btn-primary" style="font-family: 'Montserrat-Bold';">Mais delícias</a>
-                  <a href="<?php echo site_url("checkout");?>" class="btn pull-right" style="background-color:#990100;color:#fff ;font-family: 'Montserrat-Bold';">Finalizar pedido</a>
+                  <div class="row">
+                <div class="col-sm-2">
+                  <a href="<?php echo site_url("carrinho/limpar");?>" class="btn btn-default btn-block" style="margin-top: 1rem; font-family: 'Montserrat-Bold';">Limpar carrinho</a>
                 </div>
+                <div class="col-sm-2">
+                  <a href="<?php echo site_url("/");?>" class="btn btn-primary btn-block" style="margin-top: 1rem; font-family: 'Montserrat-Bold';">Mais delícias</a>
+                </div>
+                <div class="col-sm-2">
+                  <a href="<?php echo site_url("checkout");?>" class="btn btn-food btn-block" style="margin-top: 1rem; font-family: 'Montserrat-Bold';">Finalizar pedido</a>
+                </div>
+              </div>
 
             <?php endif; ?>
 
@@ -168,12 +163,6 @@ $("[name=cep]").focusout(function (){
              $("#total").html(response.total);
 
              $("#cep").html(response.bairro);
-
-
-
-
-
-
 
           }else{
             /* Erro de validação etc.... */

@@ -1,55 +1,48 @@
 <?= $this->extend('layout/principal_web') ?>
-
-
 <!-- aqui são estilos que serão enviado-->
 <?php echo $this->section('titulo') ;?><?php echo $titulo; ?><?php echo $this->endSection() ;?>
 
-
-
-
 <!-- aqui são estilos que serão enviado-->
 <?= $this->section('estilos') ?>
-
 <?= $this->endSection() ?>
-
-
 <!-- aqui são conteudo que são enviados-->
 <?= $this->section('conteudo') ?>
-
 <!-- Begin Sections-->
-
-
 <!--    Menus   -->
 <div class="container section " id="menu" data-aos="fade-up" style="margin-top: 4em">
     <div class="title-block">
         <h1 class="section-title">Conheça as nossas Delícias </h1>
     </div>
-
     <!--    Menus filter    -->
     <div class="menu_filter text-center ">
         <ul class="list-unstyled list-inline d-inline-block">
-
-          <li id="todas" class="item active">
-              <a href="javascript:;" class="filter-button" data-filter="todas">Todas</a>
-          </li>
-
+          <?php if(empty($categorias)):?>
+            <li class="item active">
+                <a href="javascript:;" class="filter-button" data-filter="todas">Não há categorias para exibir</a>
+            </li>
+          <?php else: ?>
+            <li id="todas" class="item active">
+                <a href="javascript:;" class="filter-button" data-filter="todas">Todas</a>
+            </li>
           <?php foreach ($categorias as $categoria):?>
             <li class="item ">
                 <a href="javascript:;" class="filter-button" data-filter="<?php echo esc($categoria->slug); ?>"><?php echo esc($categoria->nome); ?></a>
             </li>
           <?php endforeach;?>
-
-
+        <?php endif; ?>
         </ul>
     </div>
-
-    <!--    Menus items     -->
+    <!--Menus items-->
     <div id="menu_items">
 
       <div class="row">
 
+        <?php if(empty($produtos)):?>
+          <li class="item active">
+            <h1 class="section-title">Não há produtos para exibir</h1>
+          </li>
+        <?php else: ?>
         <?php foreach ($produtos as $produto):?>
-
         <div class="col-sm-6 filtr-item image filter active <?php echo esc($produto->categoria_slug); ?>">
             <a href="<?php echo site_url("produto/detalhes/$produto->slug"); ?>" class="block fancybox" data-fancybox-group="fancybox">
                 <div class="content">
@@ -66,6 +59,7 @@
             </a>
         </div>
       <?php endforeach; ?>
+    <?php endif; ?>
       </div>
 
 

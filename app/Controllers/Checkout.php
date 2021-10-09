@@ -10,6 +10,9 @@ class Checkout extends BaseController{
 	private $formaPagamentoModel;
 	private $bairroModel;
 	private $pedidoModel;
+	private $produtoModel;
+	private $categoriaModel;
+	private $sistemaModel;
 
 	public function __construct() {
 		//$this->usuario = new \App\Models\Usuario();
@@ -18,6 +21,10 @@ class Checkout extends BaseController{
 		$this->formaPagamentoModel = new \App\Models\FormaPagamentoModel();
 		$this->bairroModel = new \App\Models\BairroModel();
 		$this->pedidoModel = new \App\Models\PedidoModel();
+		$this->produtoModel = new \App\Models\ProdutoModel();
+		$this->sistemaModel = new \App\Models\SistemaModel();
+
+
 
 	}
 	public function index()
@@ -31,7 +38,9 @@ class Checkout extends BaseController{
 		  $data = [
 				'titulo' => 'Finalizar pedido',
 				'carrinho' => session()->get('carrinho'),
+				'produtos' => $this->produtoModel->buscaProdutosWebHome(),
 				'formas' => $this->formaPagamentoModel->where('ativo', true)->findAll(),
+				'sistemas' => $this->sistemaModel->where('ativo', true)->findAll(),
 			];
 
 			return view('Checkout/index', $data);
@@ -108,6 +117,7 @@ class Checkout extends BaseController{
 			 $retorno['total'] =  number_format($this->somaValorProdutosCarrinho() + $bairro->valor_entreg, 2);
 			  session()->set('endereco_entrega', $retorno['endereco']);
 				return $this->response->setJSON($retorno);
+
 	}
  public function processar(){
 
@@ -171,7 +181,7 @@ class Checkout extends BaseController{
 	$pedido->produtos = serialize(session()->get('carrinho'));//Quando eu salvar esse tipo de arquivos não posso salvar em varchar somente em campo text.
 	$pedido->valor_produtos = number_format($this->somaValorProdutosCarrinho(), 2);
   $pedido->valor_entrega = number_format($bairro->valor_entrega, 2);
-	$pedido->valor_pedido = number_format($pedido->valor_produto + $pedido->valor_entrega, 2);//
+	$pedido->valor_pedido = number_format($pedido->valor_produtos + $pedido->valor_entrega, 2);//
 	$pedido->endereco_entrega = session()->get('endereco_entrega').' - Número '.$checkoutPost['numero'];
 
 			 if($forma->id == 1){
@@ -209,8 +219,9 @@ class Checkout extends BaseController{
 				 session()->remove('carrinho');
 				 session()->remove('endereco_entrega');
 
+
 				// exit('Sucesso!');
-				return redirect()->to("checkout/sucesso/$pedido->codigo");
+				return redirect()->to(site_url("checkout/sucesso/$pedido->codigo"));
 
 
 	 }else{
@@ -222,14 +233,15 @@ class Checkout extends BaseController{
  }
 
 public function sucesso($codigoPedido = null){
-
 $pedido = $this->buscaPedidoOu404($codigoPedido);
 
 
    $data = [
  			'titulo' => "Pedido $codigoPedido realizado com sucesso",
 			'pedido' => $pedido,
-			'produtos' => unserialize($pedido->produtos),
+				'produtos' => $this->produtoModel->buscaProdutosWebHome(),
+			'sucesso' => unserialize($pedido->produtos),
+
 	 ];
 
 	 return view('Checkout/sucesso', $data);

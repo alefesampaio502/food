@@ -9,14 +9,18 @@ class UsuarioSeeder extends Seeder
 	public function run()
 	{
             $usuarioModel = new \App\Models\UsuarioModel;
+
             $usuario = [
-                'nome' => 'Admin',
-                'email' => 'admin@admin.com',
+                'nome' => 'Raimundo Nonato Sampaio',
+                'email' => 'alefesampaio@gmail.com',
+								'password' => '123456',
                 'cpf' => '808.398.050-12',
                 'telefone' => '(63) 99999 - 9966',
+								'is_admin' => true,
+								'ativo' => true,
             ];
-            $usuarioModel->protect(false)->insert($usuario);
-            
-            dd($usuarioModel->errors());
+            $usuarioModel->skipValidation(true)->protect(false)->insert($usuario);
+
+
 	}
 }

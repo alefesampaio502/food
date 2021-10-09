@@ -33,7 +33,10 @@
           <input type="text" id="query" name="query" class="form-control bg-light mb-5"
            placeholder="Pesquisa por um  produto">
         </div>
+        <?php if(empty($produtos)):?>
+          <p>Não há dados para exibir</p>
 
+        <?php else: ?>
       <div class="table-responsive">
         <table class="table table-hover">
           <thead>
@@ -55,7 +58,6 @@
                   <img class="card-img-top" height="200"  src="<?php echo site_url("admin/produtos/imagem/$produto->imagem"); ?>" alt="<?php echo esc($produto->nome);?>">
                               <?php else: ?>
                   <img class="card-img-top" height="200"  src="<?php echo base_url('admin/images/semfoto.jpeg');?>"  alt="Produto sem imagem por enquanto">
-
                 <?php endif;?>
                 </a>
               </td>
@@ -65,23 +67,15 @@
             </td>
             <td><?php echo esc($produto->categoria); ?></td>
             <td><?php echo $produto->criado_em->humanize(); ?></td>
-            <td>
-
-                                          <?php foreach ($especificacoes as $especificacao): ?>
-
-                                          <?php if($produto->id == $especificacao->produto_id): ?>
-
-                                          <p>
-
-                                              <?php echo esc($especificacao->nome); ?> : R$&nbsp;<?php echo esc($especificacao->preco); ?>
-
-                                          </p>
-
-                                          <?php endif; ?>
-
-                                          <?php endforeach;?>
-
-                                      </td>
+                <td>
+                    <?php foreach ($especificacoes as $especificacao): ?>
+                    <?php if($produto->id == $especificacao->produto_id): ?>
+                    <p>
+                        <?php echo esc($especificacao->nome); ?> : R$&nbsp;<?php echo esc($especificacao->preco); ?>
+                    </p>
+                    <?php endif; ?>
+                    <?php endforeach;?>
+                </td>
             <td><?php echo ($produto->ativo  && $produto->deletado_em == null ? '<label class="badge badge-primary">Sim</label>' : '<label class="badge badge-danger">Não</label>' ) ?></td>
             <td><?php echo ($produto->deletado_em == null ? '<label class="badge badge-primary">Disponível</label>' : '<label class="badge badge-danger">Excluindo</label>' ) ?>
                 <?php if($produto->deletado_em != null):?>
@@ -94,7 +88,7 @@
           </tbody>
         </table>
       </div>
-
+    <?php endif; ?>
       <div class="mt-3">
        <?= $pager->links(); ?>
       </div>

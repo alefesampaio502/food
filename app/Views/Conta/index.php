@@ -33,19 +33,15 @@
         </ul>
       <?php endif;?>
       <div class="col-md-12">
-
-       <?php if(!isset($pedidos)):?>
-
-         <h4>Neste área aparecerá o seu
-
+       <?php if(empty($pedidos)):?>
+         <h4>Neste área aparecerá o seu históerico de pedidos</h4>
        <?php else: ?>
-
          <?php foreach ($pedidos as $key => $pedido): ?>
          <div class="panel-group">
           <div class="panel panel-primary">
             <div class="panel-heading">
               <h4 class="panel-title">
-                <a data-toggle="collapse" href="#collapse<?php echo $key; ?>">Pedido: <?php echo esc($pedido->codigo); ?> - Realizado: <?php echo esc($pedido->criado_em->humanize()); ?></a>
+                 <a data-toggle="collapse" href="#collapse<?php echo $key; ?>"> <b>+</b>&nbsp; Pedido: <?php echo esc($pedido->codigo); ?> - Realizado: <?php echo esc($pedido->criado_em->humanize()); ?></a>
               </h4>
             </div>
             <div id="collapse<?php echo $key; ?>" class="panel-collapse collapse">

@@ -10,17 +10,23 @@ class Conta extends BaseController
 	private $usuario;
 	private $usuarioModel;
 	private $pedidoModel;
+	private $produtoModel;
+	private $sistemaModel;
 
 	public function __construct() {
 		$this->usuario = service('autenticacao')->pegaUsuarioLogado();
 		$this->usuarioModel = new \App\Models\UsuarioModel();
 		$this->pedidoModel = new \App\Models\PedidoModel();
+		$this->produtoModel = new \App\Models\ProdutoModel();
+		$this->sistemaModel = new \App\Models\SistemaModel();
 	}
 	public function index(){
 
 		$data = [
 
 			'titulo' => 'Meus pedidos',
+			'produtos' => $this->produtoModel->buscaProdutosWebHome(),
+			'sistemas' => $this->sistemaModel->where('ativo', true)->findAll(),
 		];
 
 		$pedidos = $this->pedidoModel->orderBy('criado_em', 'DESC')->where('usuario_id', $this->usuario->id)->findAll();
@@ -58,6 +64,7 @@ public function editar(){
 
 			'titulo' => 'Editar meus dados',
 				'usuario' => $this->usuario,
+				'produtos' => $this->produtoModel->buscaProdutosWebHome(),
 		];
 
 		return view('Conta/editar', $data);
@@ -122,6 +129,7 @@ public function atualizar(){
 			$data = [
 				  'titulo' => 'Alterar Senha de acesso',
 					'usuario' => $this->usuario,
+					'produtos' => $this->produtoModel->buscaProdutosWebHome(),
 			];
 
 			return view('Conta/editar_senha', $data);

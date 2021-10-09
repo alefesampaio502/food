@@ -191,7 +191,7 @@ class Produtos extends BaseController{
 
 									list($lagura, $altura) = getimagesize($imagem->getPathName());
 
-									if ($lagura < "400" || $altura < "400") {
+									if ($lagura < "200" || $altura < "200") {
 										return redirect()->back()->with('atencao','A imagem não pode ser menor do que 400 x 400 pixels.');
                   }
 

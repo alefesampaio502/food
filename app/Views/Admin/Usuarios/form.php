@@ -26,6 +26,7 @@
                <label for="password_confirmation"> Confirmação de senha: <span class="text-danger">*</span> </label>
                <input type="password" name="password_confirmation" class="form-control" id="password_confirmation" value="<?php echo esc($usuario->email);?>">
              </div>
+              <?php if( $usuario->id != usuario_logado()->id ):?>
              <div class="form-group col-md-3">
                  <label for="ativo"> Perfil de acesso: <span class="text-danger">*</span> </label>
                <select class="form-control form-control" name="is_admin" required>
@@ -38,6 +39,7 @@
                   <?php endif ?>
               </select>
              </div>
+
              <div class="form-group col-md-3">
 									<label for="ativo"> Ativo: <span class="text-danger">*</span> </label>
                   <select class="form-control form-control-ativo" name="ativo" required>
@@ -50,6 +52,7 @@
                      <?php endif ?>
                  </select>
              </div>
+           <?php endif ?>
            </div>
              <button type="submit" class="btn btn-primary mr-2 btn-sm"><i class=" mdi mdi-content-save btn-icon-prepend mr-1"></i>Salvar
              </button>

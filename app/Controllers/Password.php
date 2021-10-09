@@ -7,14 +7,17 @@ use App\Controllers\BaseController;
 class Password extends BaseController{
 
 	private $usuarioModel;
+	private $sistemaModel;
 	public function __construct(){
 
 			$this->usuarioModel = new \App\Models\UsuarioModel();
+			$this->sistemaModel = new \App\Models\SistemaModel();
 }
 public function esqueci(){
 
 	 $data = [
 		 'titulo' => 'Esqueci a minha senhe',
+		 	'sistemas' => $this->sistemaModel->where('ativo', true)->findAll(),
 	 ];
 	 	return view('Password/esqueci', $data);
 	}

@@ -44,7 +44,7 @@
                          </div>
                         <?php endif; ?>
           <div class="brand-logo">
-            <img src="<?= base_url('admin')?>/images/logo.svg" alt="logo">
+            <img src="<?= base_url('admin')?>/images/mister.png" alt="logo">
           </div>
           <h4>Recuperando a senha!</h4>
           <h6 class="font-weight-light mb-3"><?php echo $titulo; ?></h6>
